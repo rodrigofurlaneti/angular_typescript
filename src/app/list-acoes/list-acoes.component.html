@@ -1,0 +1,28 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Codigo</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Abv</th>
+        <th>Cotação</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of list">
+        <td>{{ i.idt }}</td>
+        <td>{{ i.code }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.companyName }}</td>
+        <td>{{ i.companyAbvName }}</td>
+        <td>
+          <!-- <button [value]=i.idt (click)=listIdEmpresa($event.target.value)></button> -->
+            <a routerLink="/cotacao/{{i.idt}}">
+              <button>
+              </button>
+            </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
