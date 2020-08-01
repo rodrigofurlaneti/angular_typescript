@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CotacaoModel } from '../cotacao/cotacao.model';
 import { CotacaoService } from '../cotacao/cotacao.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/src/sweetalert2.scss';
+import { xml2json } from 'xml-js';
 
 @Component({
   selector: 'app-cotacao',
@@ -9,8 +12,8 @@ import { CotacaoService } from '../cotacao/cotacao.service';
 })
 
 export class CotacaoComponent implements OnInit {
-  
-  cotacao: Array<CotacaoModel> = new Array()
+  strRes: string = '';
+  cotacao: CotacaoModel = new CotacaoModel()
 
   constructor(private cotacaoService: CotacaoService) {
     this.cotacaoService = cotacaoService;
@@ -26,11 +29,27 @@ export class CotacaoComponent implements OnInit {
   cotacaoIdEmpresa(id: string){
     this.cotacaoService
         .CotacaoIdEmpresa(id)
-        .subscribe(res => { if (res["error"] == "FSW-0401")
-                              console.log('Erro 401!')
-                            else if(res["data"][0] != null){
-                              this.cotacao = res["data"][0];
-                            } },
-                   err => { console.log(err) })
+        .subscribe(res => { console.log(res) },
+                   err => { this.strRes = err['error']['text'];
+                            this.popularObj(this.serializarXmlToJson(this.strRes));
+                            console.log(this.cotacao);
+                          })
+  }
+  serializarXmlToJson(xml: string){
+      var result = xml2json(xml, {compact: true, spaces: 4});
+      return result;
+  }
+  popularObj(json: string){
+    var obj = JSON.parse(json);
+    this.cotacao.Abertura = obj.ComportamentoPapeis.Papel._attributes.Abertura;
+    this.cotacao.Codigo = obj.ComportamentoPapeis.Papel._attributes.Codigo;
+    this.cotacao.Data = obj.ComportamentoPapeis.Papel._attributes.Data;
+    this.cotacao.Maximo = obj.ComportamentoPapeis.Papel._attributes.Maximo;
+    this.cotacao.Medio = obj.ComportamentoPapeis.Papel._attributes.Medio;
+    this.cotacao.Minimo = obj.ComportamentoPapeis.Papel._attributes.Minimo;
+    this.cotacao.Nome = obj.ComportamentoPapeis.Papel._attributes.Nome;
+    this.cotacao.Oscilacao = obj.ComportamentoPapeis.Papel._attributes.Oscilacao;
+    this.cotacao.Ultimo = obj.ComportamentoPapeis.Papel._attributes.Ultimo;
+    return this.cotacao;
   }
 }

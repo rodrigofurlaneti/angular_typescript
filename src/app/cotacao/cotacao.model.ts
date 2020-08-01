@@ -1,10 +1,12 @@
 export class CotacaoModel{
-    public date: number
-    public price: number
-    public low: number
-    public high: number
-    public var: number
-    public varpct: number
-    public vol: number
+    public Codigo: number
+    public Nome: number
+    public Data: number
+    public Abertura: number
+    public Minimo: number
+    public Maximo: number
+    public Medio: number
+    public Ultimo: number
+    public Oscilacao: number
    constructor(){}     
 }

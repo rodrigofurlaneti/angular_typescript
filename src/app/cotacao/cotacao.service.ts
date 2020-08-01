@@ -17,12 +17,11 @@ export class CotacaoService {
     this.httpClient = httpClient;
    
   }
-  CotacaoIdEmpresa(id: string): Observable<CotacaoModel[]>{
+  CotacaoIdEmpresa(id: string): Observable<any>{
     //let ep = Urls.ListIdEmpresa;
-    let ep = 'http://cotacoes.economia.uol.com.br/ws/asset/'+ id +'/intraday?';
-    console.log(ep);
-    return this.httpClient.get<CotacaoModel[]>(ep, {
-      headers: new HeadersUtils().getRequestHeards()
-    });
+    let ep = 'http://bvmf.bmfbovespa.com.br/cotacoes2000/FormConsultaCotacoes.asp?strListaCodigos='+ id;
+    var header;
+    header: new HeadersUtils().getRequestHeardsIbova()
+    return this.httpClient.get<any>(ep, { headers: header });
   }
 }
